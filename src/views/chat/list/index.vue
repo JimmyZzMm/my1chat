@@ -3,7 +3,7 @@
     <div data-tauri-drag-region class="pvert-12 phorz-12 toolbar d-flex">
       <el-input
         clearable
-        style="flex: 1 1;"
+        style="flex: 1 1"
         class="pr-6"
         placeholder="Search"
         size="small"
@@ -12,7 +12,7 @@
       />
 
       <el-button
-        style="flex: 0 0 auto;"
+        style="flex: 0 0 auto"
         class="phorz-6"
         size="small"
         :icon="Plus"
@@ -20,13 +20,10 @@
       />
     </div>
 
-    <el-scrollbar class="ps-r" style="flex: 1 1 auto;">
+    <el-scrollbar class="ps-r" style="flex: 1 1 auto">
       <ul>
-        <li
-          v-for="item in sessions"
-          :key="item.id"
-        >
-          <context-menu @open="handleContextMenu(item.id)" >
+        <li v-for="item in sessions" :key="item.id">
+          <context-menu @open="handleContextMenu(item.id)">
             <div
               class="session phorz-10 pvert-16 d-flex ps-r"
               :class="{
@@ -43,7 +40,9 @@
 
               <div class="content pl-10 pr-6">
                 <p class="content-title ellipsis pr-30 pb-4">{{ item.name }}</p>
-                <p class="content-abstract ellipsis">{{ renderAbstract(item) }}</p>
+                <p class="content-abstract ellipsis">
+                  {{ renderAbstract(item) }}
+                </p>
               </div>
               <div class="ps-a t-assist date">
                 {{ getChatDate(item.latest) }}
@@ -55,23 +54,23 @@
                 v-if="item.stickyOnTop"
                 @click="handleSticky(item.id, false)"
               >
-                {{ $t('Unsticky') }}
+                {{ $t("Unsticky") }}
               </context-menu-item>
-              <context-menu-item
-                v-else
-                @click="handleSticky(item.id, true)"
-              >
-                {{ $t('Sticky on Top') }}
+              <context-menu-item v-else @click="handleSticky(item.id, true)">
+                {{ $t("Sticky on Top") }}
               </context-menu-item>
               <context-menu-item @click="handleRename()">
-                {{ $t('Rename') }}
+                {{ $t("Rename") }}
               </context-menu-item>
               <context-menu-item @click="handleChangeAvatar()">
-                {{ $t('Change Avatar') }}
+                {{ $t("Change Avatar") }}
               </context-menu-item>
               <el-divider class="mvert-4" />
               <context-menu-item @click="handleDelete(item.id)">
-                {{ $t('Delete') }}
+                {{ $t("Delete") }}
+              </context-menu-item>
+              <context-menu-item @click="handleDeleteAll()">
+                {{ $t("DeleteAll") }}
               </context-menu-item>
             </template>
           </context-menu>
@@ -110,9 +109,8 @@ const sessions = computed(() => {
   if (!searchKey.value) {
     return store.sessions;
   }
-  return store.sessions.filter(item => item.name
-    .toLowerCase()
-    .includes(searchKey.value.toLowerCase()),
+  return store.sessions.filter((item) =>
+    item.name.toLowerCase().includes(searchKey.value.toLowerCase()),
   );
 });
 
@@ -124,17 +122,23 @@ const renderAbstract = (session: ChatSession.ISession) => {
   return message.content;
 };
 
-const handleContextMenu = (id: string) => contextId.value = id;
+const handleContextMenu = (id: string) => (contextId.value = id);
 
 const handleDelete = (id: string) => store.deleteSession(id);
+const handleDeleteAll = () => {
+  sessions.value.map(({ id }) => {
+    store.deleteSession(id);
+  });
+};
 
-const handleSticky = (id: string, stickyOnTop: boolean) => store.updateSession(id, {
-  stickyOnTop,
-});
+const handleSticky = (id: string, stickyOnTop: boolean) =>
+  store.updateSession(id, {
+    stickyOnTop,
+  });
 
-const handleRename = () => renameVisible.value = true;
+const handleRename = () => (renameVisible.value = true);
 
-const handleChangeAvatar = () => changeAvatarVisible.value = true;
+const handleChangeAvatar = () => (changeAvatarVisible.value = true);
 </script>
 
 <style lang="less" scoped>
@@ -188,7 +192,7 @@ const handleChangeAvatar = () => changeAvatarVisible.value = true;
     width: 36px;
     height: 36px;
     border-radius: var(--border-radius-regular);
-    opacity: .85;
+    opacity: 0.85;
   }
 }
 </style>
