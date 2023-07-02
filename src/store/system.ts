@@ -10,10 +10,12 @@ export const useSystemStore = defineStore('system', () => {
   const { locale } = useI18n();
   const config = reactive<AppSystem.IConfig>({
     openaiAPIKey: '',
+    openaiAPIKeyStore:Object.fromEntries(Object.keys(Model).map((key) => [key, ''])),
     locale: takeLocale(navigator.language),
     theme: takeTheme(Theme.Auto),
     fontSize: 13,
-    host: DEFAULT_HOST,
+    host:DEFAULT_HOST,
+    hostStore: Object.fromEntries(Object.keys(Model).map((key) => [key, DEFAULT_HOST])),
     model: Model.GPT_35_TURBO,
   });
   const platform = ref('');

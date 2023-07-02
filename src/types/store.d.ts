@@ -5,10 +5,12 @@
 declare namespace AppSystem {
   interface IConfig {
     openaiAPIKey: string,
+    openaiAPIKeyStore: object,
     locale: import('@/constants').Language,
     theme: import('@/constants').Theme,
     model: import('@/constants').Model,
     host: string,
+    hostStore:object,
     fontSize: number,
   }
 }

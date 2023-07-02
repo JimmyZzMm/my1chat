@@ -4,7 +4,7 @@
     align-center
     append-to-body
     v-model="visible"
-    
+
     :title="$t('Settings')"
   >
     <el-scrollbar height="400px">
@@ -15,7 +15,7 @@
         :model="config"
       >
         <el-form-item :label="$t('OpenAI API Key')">
-          <el-input type="password" v-model="config.openaiAPIKey" />
+          <el-input type="password" v-model="config.openaiAPIKeyStore[config.model]" />
         </el-form-item>
 
         <el-form-item :label="$t('Language')">
@@ -54,7 +54,7 @@
         <el-divider content-position="left">{{ $t('Proxy & Model') }}</el-divider>
 
         <el-form-item :label="$t('API Host')">
-          <el-input v-model="config.host" />
+          <el-input v-model="config.hostStore[config.model]" />
         </el-form-item>
 
         <el-form-item :label="$t('Model')">
