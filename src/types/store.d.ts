@@ -1,20 +1,20 @@
 /**
  * pinia store 类型声明
  */
-
+import {Model} from '@/constants';
 declare namespace AppSystem {
   interface IConfig {
     openaiAPIKey: string,
     openaiAPIKeyStore: ModelStore,
     locale: import('@/constants').Language,
     theme: import('@/constants').Theme,
-    model: import('@/constants').Model,
+    model: Model,
     host: string,
     hostStore:ModelStore,
     fontSize: number,
   }
   interface ModelStore {
-    [key:import('@/constants').Model]:string
+    [key:keyof Model]:string
   }
 }
 
