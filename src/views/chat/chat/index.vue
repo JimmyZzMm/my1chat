@@ -69,6 +69,7 @@ const handleRefresh = async (id: string) => {
 // 接收 OpenAI 的返回
 const handleReceive = async (messageId?: string) => {
   let id = messageId;
+  let {model} = systemStore.config;
   if (!id) {
     // 没有ID则是新生成的对话
     id = v4();
@@ -77,7 +78,7 @@ const handleReceive = async (messageId?: string) => {
       role: Role.Assistant,
       created: Date.now(),
       content: '...',
-      model: systemStore.config.model,
+      model,
       generating: true,
     };
     sessionStore.insertMessage(wrap);
@@ -85,7 +86,7 @@ const handleReceive = async (messageId?: string) => {
     // 具备ID则是重新生成的
     // 更新文本与状态
     sessionStore.updateMessage(id, {
-      model: systemStore.config.model,
+      model,
       generating: true,
       content: '...',
     });
@@ -96,11 +97,12 @@ const handleReceive = async (messageId?: string) => {
 
   try {
     autoScrollToMessage.value = true;
+
     await completion(
       {
-        token: systemStore.config.openaiAPIKey,
-        host: systemStore.config.host,
-        model: systemStore.config.model,
+        token: systemStore.config.openaiAPIKeyStore[model],
+        host: systemStore.config.hostStore[model],
+        model,
         messages,
       },
       generateOnText(id),
@@ -157,14 +159,15 @@ watch(() => sessionStore.active, () => {
 
 // 给对话命名
 watch(() => session.value, async () => {
+  let model = systemStore.config.model;
   if (session.value?.name !== 'New Session' || session.value?.messages.length < 3) {
     return;
   }
   try {
     const name = await completion({
-      token: systemStore.config.openaiAPIKey,
-      host: systemStore.config.host,
-      model: systemStore.config.model,
+      token: systemStore.config.openaiAPIKeyStore[model],
+      host: systemStore.config.hostStore[model],
+      model,
       messages: namePrompts(session.value.messages.slice(0, 3)),
     });
     sessionStore.updateSession(session.value.id, {

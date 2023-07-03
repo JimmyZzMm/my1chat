@@ -9,13 +9,17 @@ import { Language, Theme, TauriCommand, DEFAULT_HOST, Model } from '@/constants'
 export const useSystemStore = defineStore('system', () => {
   const { locale } = useI18n();
   const config = reactive<AppSystem.IConfig>({
-    openaiAPIKey: '',
-    openaiAPIKeyStore:Object.fromEntries(Object.keys(Model).map((key) => [key as keyof typeof Model, ''])),
+    openaiAPIKeyStore:(Object.keys(Model) as Array<keyof typeof Model>).reduce((acc, key) => {
+      acc[key] = '';
+      return acc;
+    }, {} as { -readonly [key in keyof typeof Model]: string }),
     locale: takeLocale(navigator.language),
     theme: takeTheme(Theme.Auto),
     fontSize: 13,
-    host:DEFAULT_HOST,
-    hostStore: Object.fromEntries(Object.keys(Model).map((key) => [key as keyof typeof Model, DEFAULT_HOST])),
+    hostStore: (Object.keys(Model) as Array<keyof typeof Model>).reduce((acc, key) => {
+      acc[key] = '';
+      return acc;
+    }, {} as { -readonly [key in keyof typeof Model]: string }),
     model: Model.GPT_35_TURBO,
   });
   const platform = ref('');

@@ -3,17 +3,16 @@
  */
 declare namespace AppSystem {
   interface IConfig {
-    openaiAPIKey: string,
-    openaiAPIKeyStore: ModelStore,
+    openaiAPIKeyStore: {
+      -readonly [K in keyof typeof Model]: string;
+    };
     locale: import('@/constants').Language,
     theme: import('@/constants').Theme,
     model: import('@/constants').Model,
-    host: string,
-    hostStore:ModelStore,
+    hostStore:{
+      -readonly [K in keyof typeof Model]: string;
+    };
     fontSize: number,
-  }
-  interface ModelStore {
-    [key:keyof import('@/constants').Model]:string
   }
 }
 
